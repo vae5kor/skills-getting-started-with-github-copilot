@@ -10,6 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
 import os
 from pathlib import Path
+import uvicorn
 
 app = FastAPI(title="Mergington High School API",
               description="API for viewing and signing up for extracurricular activities")
@@ -117,5 +118,4 @@ if __name__ == "__main__":
     print_activities_table()
     print_participants_table()
     
-    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
