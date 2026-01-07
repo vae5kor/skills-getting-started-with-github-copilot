@@ -11,6 +11,36 @@ from fastapi.responses import RedirectResponse
 import os
 from pathlib import Path
 
+app = FastAPI(title="Mergington High School API",
+              description="API for viewing and signing up for extracurricular activities")
+
+# Mount the static files directory
+current_dir = Path(__file__).parent
+app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
+          "static")), name="static")
+
+# In-memory activity database
+activities = {
+    "Chess Club": {
+        "description": "Learn strategies and compete in chess tournaments",
+        "schedule": "Fridays, 3:30 PM - 5:00 PM",
+        "max_participants": 12,
+        "participants": ["michael@mergington.edu", "daniel@mergington.edu"]
+    },
+    "Programming Class": {
+        "description": "Learn programming fundamentals and build software projects",
+        "schedule": "Tuesdays and Thursdays, 3:30 PM - 4:30 PM",
+        "max_participants": 20,
+        "participants": ["emma@mergington.edu", "sophia@mergington.edu"]
+    },
+    "Gym Class": {
+        "description": "Physical education and sports activities",
+        "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
+        "max_participants": 30,
+        "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+    }
+}
+
 
 def print_activities_table():
     """Print all activities in a formatted table"""
@@ -56,36 +86,6 @@ def print_participants_table():
         
         print("="*100 + "\n")
 
-app = FastAPI(title="Mergington High School API",
-              description="API for viewing and signing up for extracurricular activities")
-
-# Mount the static files directory
-current_dir = Path(__file__).parent
-app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
-          "static")), name="static")
-
-# In-memory activity database
-activities = {
-    "Chess Club": {
-        "description": "Learn strategies and compete in chess tournaments",
-        "schedule": "Fridays, 3:30 PM - 5:00 PM",
-        "max_participants": 12,
-        "participants": ["michael@mergington.edu", "daniel@mergington.edu"]
-    },
-    "Programming Class": {
-        "description": "Learn programming fundamentals and build software projects",
-        "schedule": "Tuesdays and Thursdays, 3:30 PM - 4:30 PM",
-        "max_participants": 20,
-        "participants": ["emma@mergington.edu", "sophia@mergington.edu"]
-    },
-    "Gym Class": {
-        "description": "Physical education and sports activities",
-        "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
-        "max_participants": 30,
-        "participants": ["john@mergington.edu", "olivia@mergington.edu"]
-    }
-}
-
 
 @app.get("/")
 def root():
@@ -112,7 +112,7 @@ def signup_for_activity(activity_name: str, email: str):
     return {"message": f"Signed up {email} for {activity_name}"}
 
 
-# Print tables when the module is loaded
+# Print tables when the script is run directly
 if __name__ == "__main__":
     print_activities_table()
     print_participants_table()
